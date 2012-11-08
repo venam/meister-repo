@@ -2,6 +2,11 @@ import mechanize
 import re, random
 import threading, time
 
+config_file   = ".config.txt"
+pages_file    = "pages.txt"
+comments_file = "comments.txt"
+
+
 liker = 0
 class webstagram(threading.Thread):
     def __init__(self,pages,user,passwd,all_comments):
@@ -149,9 +154,9 @@ class webstagram(threading.Thread):
                 time.sleep(1)
                 self.perkeyword(theme)
 
-user,passwd = open(".config.txt",'r').read().split(":")[1],open(".config.txt",'r').read().split(":")[2].replace("\n","").replace(" ","")
-pages = open("pages.txt",'r').readlines()
-comments = open("comments.txt",'r').readlines()
+user,passwd = open(config_file,'r').read().split(":")[1],open(".config.txt",'r').read().split(":")[2].replace("\n","").replace(" ","")
+pages = open(pages_file,'r').readlines()
+comments = open(comments_file,'r').readlines()
 all_comments = []
 for comment in comments:
     all_comments.append( comment.replace("\n","") )
