@@ -1,1 +1,1 @@
-#LOGIN:username:passwd
+#LOGIN:USERNAME:PASSWD

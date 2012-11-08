@@ -4,11 +4,12 @@ import threading, time
 
 liker = 0
 class webstagram(threading.Thread):
-    def __init__(self,pages,user,passwd):
-        self.pages  =   pages
-        self.user   =   user
-        self.passwd =   passwd
-        self.br     =   self.browser()
+    def __init__(self,pages,user,passwd,all_comments):
+        self.pages    =   pages
+        self.user     =   user
+        self.passwd   =   passwd
+        self.br       =   self.browser()
+        self.comments = all_comments
         threading.Thread.__init__(self)
 
 
@@ -36,6 +37,10 @@ class webstagram(threading.Thread):
         print myurl
         self.br.open(myurl.replace(" ",""))
 
+    def commenter(self, photoID):
+        my_comment = random.choice(self.comments)
+        self.br.open("http://web.stagram.com/post_comment/", "message="+my_comment+"&messageid="+photoID)
+
     def pertag(self, theme):
         try:
             global liker
@@ -57,6 +62,7 @@ class webstagram(threading.Thread):
                 for linkzb in linkza:
                     print linkzb
                     self.br.open("http://web.stagram.com/do_like/","&pk="+linkzb+"&t=")
+                    self.commenter(linkzb)
                     liker+=1
                     print "NUMBER OF LIKES: "+ str(liker)
                     if liker==254:
@@ -106,6 +112,7 @@ class webstagram(threading.Thread):
                 for linkzd in linkzc:
                     print linkzd
                     self.br.open("http://web.stagram.com/do_like/","&pk="+linkzd+"&t=")
+                    self.commenter(linkzd)
                     liker+=1
                     print "NUMBER OF LIKES: "+ str(liker)
                     if liker==254:
@@ -144,6 +151,11 @@ class webstagram(threading.Thread):
 
 user,passwd = open(".config.txt",'r').read().split(":")[1],open(".config.txt",'r').read().split(":")[2].replace("\n","").replace(" ","")
 pages = open("pages.txt",'r').readlines()
-Mythread = webstagram(pages,user,passwd)
+comments = open("comments.txt",'r').readlines()
+all_comments = []
+for comment in comments:
+    all_comments.append( comment.replace("\n","") )
+
+Mythread = webstagram(pages,user,passwd,all_comments)
 Mythread.start()
 
