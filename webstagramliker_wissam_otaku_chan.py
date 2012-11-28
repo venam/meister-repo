@@ -91,6 +91,7 @@ class webstagram(threading.Thread):
     def follow(self):
         # get the user ID from regexing the page
         userID = re.findall( "<a href=\"/followed-by/([0-9]*)\">", self.br.response().read() )[0]
+
         print "Trying to Follow " + str(userID)
         if userID not in self.all_usersID:
             self.br.open( "http://web.stagram.com/do_follow/", "&pk=" + str(userID) )
@@ -166,13 +167,13 @@ class webstagram(threading.Thread):
         for theme in self.pages:
             print theme
             theme = theme.replace(" ","").replace("\n","")
-            #try:
-            #    print "PER TAG"
-            #    self.pertag(theme)
-            #except Exception,e:
-            #    print e
-            #    time.sleep(1)
-            #    self.pertag(theme)
+            try:
+                print "PER TAG"
+                self.pertag(theme)
+            except Exception,e:
+                print e
+                time.sleep(1)
+                self.pertag(theme)
             try:
                 print "PER KEYWORD:"
                 self.perkeyword(theme)
